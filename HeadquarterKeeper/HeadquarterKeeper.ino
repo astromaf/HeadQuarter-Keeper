@@ -26,6 +26,11 @@
   // MODIFY HERE //
   /////////////////
   byte mac[] = {0x00, 0xAA, 0xBB, 0xCC, 0xDE, 0x19 }; // Be sure this address is unique in your network
+  IPAddress ip(192,168,1, 177);//-------------->>>>>>><<put here correct values!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+IPAddress gateway(192,168,1, 1);/////////////////////////////////////HEEEEEERREE1!!!!!
+IPAddress subnet(255, 255, 0, 0);///////////////////////////ALSO HERE!!!!!!!!!!!!!!!!!
+  
+  
   
   //Your secret API key from servers
   char DEVID1[] = "vB3315C23E888FFE";        //Scenario : "LightON"
@@ -56,18 +61,10 @@
     pinMode(Led_Pin, OUTPUT);
     LDR= luz(); 
   
-    // start the Ethernet connection:
-    if (Ethernet.begin(mac) == 0) {
-      Serial.println("Failed to configure Ethernet using DHCP");
-      // no point in carrying on, so do nothing forevermore:
-      while(true);
-    }
-    else{
-      Serial.println("Ethernet ready");
-      // print the Ethernet board/shield's IP address:
-      Serial.print("My IP address: ");
-      Serial.println(Ethernet.localIP());
-    }
+  //start  ethernet connection
+    Ethernet.begin(mac, ip, gateway, subnet);
+
+       
     // give the Ethernet shield a second to initialize:
     delay(1000);
   }
@@ -125,7 +122,8 @@
   
     // Check if Arduino Ethernet needs to be restarted
     if (failedCounter > 3 ) {
-      startEthernet();
+        Ethernet.begin(mac, ip, gateway, subnet);
+
     }
     lastConnected = client.connected();
   }
